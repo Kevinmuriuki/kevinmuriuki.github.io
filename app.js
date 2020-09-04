@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
       x = position.coords.longitude;
       y = position.coords.latitude;
 
-      const api = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&${x},${y}&units=metric`;
+      const api = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID={key}${x},${y}&units=metric`;
 
       // fetch users current wether data according to their location
       fetchData(api);
@@ -32,7 +32,7 @@ input.addEventListener('keypress', e => {
 });
  
 function getInputValue(query) {
-  const api = `http://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&units=metric`;
+  const api = `http://api.openweathermap.org/data/2.5/weather?q=${query}&APPID={key}=metric`;
 
   fetchData(api);
 }
