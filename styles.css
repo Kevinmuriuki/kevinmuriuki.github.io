@@ -6,14 +6,16 @@
 
 body {
   height: 100vh;
+  background: linear-gradient(rgb(47, 150, 163), rgb(48, 62, 143));
+  background-repeat: no-repeat;
+  font-family: 'montserrat', sans-serif;
+  color: white;
+}
+
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("https://cdn.wallpapersafari.com/87/27/eqKICU.jpg");
-  background-size: cover;
-  background-repeat: repeat;
-  font-family: 'montserrat', sans-serif;
-  color: white;
 }
 
 .header {
@@ -27,14 +29,13 @@ body {
 .header input {
   max-width: 300px;
   width: 100%;
-
   padding: 10px 15px;
   border: none;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 1.2em 0em 1.2em 0em;
   border-bottom: .3em solid #DF8E00;
-  color: #313131;
+  color: #0c0c0c;
   font-weight: 1.5em;
   font-weight: 300;
   transition: 0.8s ease-out;
