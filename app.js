@@ -33,9 +33,8 @@ function getInputValue(query) {
 function fetchData(url) {
   let city = document.querySelector("h2");
   let temp = document.querySelector(".temp");
-  let icon = document.querySelector(".temperature > span");
+  let icon = document.querySelector(".temperature > span img");
   let description =document.querySelector(".temperature-description");
-
 
   fetch(url) 
     .then(response => {
@@ -43,8 +42,10 @@ function fetchData(url) {
     })
     .then(data => {
       city.textContent = data.name;
-      temp.textContent = data.main.temp;
+      temp.textContent = Math.floor(data.main.temp);
       description.textContent = data.weather[0].description;
-      icon.textContent = data.weather[0].icon;
+      icon.setAttribute("src", `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+      icon
     })
 }
+
