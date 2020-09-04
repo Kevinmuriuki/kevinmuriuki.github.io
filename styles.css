@@ -5,14 +5,13 @@
 }
 
 body {
-  height:39.05rem;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(rgb(47, 150, 163), rgb(48, 62, 143));
-  background-position: center;
+  background-image: url("https://cdn.wallpapersafari.com/87/27/eqKICU.jpg");
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font-family: 'montserrat', sans-serif;
   color: white;
 }
@@ -26,8 +25,9 @@ body {
 }
 
 .header input {
+  max-width: 300px;
   width: 100%;
-  max-width: 280px;
+
   padding: 10px 15px;
   border: none;
   outline: none;
@@ -47,8 +47,8 @@ body {
 .weather-data {
   position: relative;
   padding: 1.6rem 1.6rem 4rem;
-  width: 70%;
-  height: 50%;
+  width: 90%;
+  height: 320px;
   background: rgb(101, 123, 247);
   flex-direction: column;
   text-align: center;
@@ -116,18 +116,22 @@ body {
 
 @media screen and (min-width: 1200px) {
   .weather-data {
-    width: 30%;
+    width: 70%;
   }
 }
 
 @media screen and (min-width: 900px) {
   .weather-data {
-    width: 30%;
+    width: 60%;
+    height: 400px;
   }
 }
 
 @media screen and (min-width: 700px) {
+  body {
+    justify-content: center;
+  }
   .weather-data {
-    width: 30%;
+    width: 50%;
   }
 }
