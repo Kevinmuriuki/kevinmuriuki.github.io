@@ -1,6 +1,4 @@
 const input = document.querySelector(".cities");
-let time = document.querySelector(".location > p");
-let date = document.querySelector(".date");
 
 window.addEventListener("load", () => {
   let x;
@@ -31,6 +29,10 @@ function getInputValue(query) {
 }
 
 function fetchData(url) {
+  let time = document.querySelector(".location > p");
+  let date = document.querySelector(".date");
+  let todayTime = new Date();
+  let todayDate = new Date();
   let city = document.querySelector("h2");
   let temp = document.querySelector(".temp");
   let icon = document.querySelector(".temperature > span img");
@@ -41,11 +43,22 @@ function fetchData(url) {
       return response.json();
     })
     .then(data => {
+      // time.textContent = timeManage(todayTime);
+      date.textContent = dateManage(todayDate);
       city.textContent = data.name;
       temp.textContent = Math.floor(data.main.temp);
       description.textContent = data.weather[0].description;
       icon.setAttribute("src", `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
       icon
     })
+}
+
+function dateManage(arg) {
+  let months = [ "January", "February", "March", "April","May", "June", "July", "August", "September","Octomber", "November", "December"  ];
+  let year = arg.getFullYear();
+  let month = months[arg.getMonth()];
+  let date = arg.getDate();
+
+  return `${month} ${date} ${year}`;
 }
 
