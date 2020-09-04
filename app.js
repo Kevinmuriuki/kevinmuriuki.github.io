@@ -43,7 +43,7 @@ function fetchData(url) {
       return response.json();
     })
     .then(data => {
-      // time.textContent = timeManage(todayTime);
+      time.textContent = timeManage(todayTime);
       date.textContent = dateManage(todayDate);
       city.textContent = data.name;
       temp.textContent = Math.floor(data.main.temp);
@@ -54,11 +54,18 @@ function fetchData(url) {
 }
 
 function dateManage(arg) {
-  let months = [ "January", "February", "March", "April","May", "June", "July", "August", "September","Octomber", "November", "December"  ];
+  let months = [ "January", "February", "March", "April","May", "June", "July", "August", "September","Octomber", "November", "December" ];
   let year = arg.getFullYear();
   let month = months[arg.getMonth()];
   let date = arg.getDate();
 
   return `${month} ${date} ${year}`;
+}
+
+function timeManage(arg) {
+  let hr = arg.getHours();
+  let min = arg.getMinutes();
+
+  return `${hr}:${min}`;
 }
 
