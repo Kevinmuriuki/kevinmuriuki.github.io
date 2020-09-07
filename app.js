@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
       x = position.coords.longitude;
       y = position.coords.latitude;
 
-      const api = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID={key}${x},${y}&units=metric`;
+      const api = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&units${x},${y}&units=metric`;
 
       // fetch users current wether data according to their location
       fetchData(api);
@@ -32,9 +32,10 @@ input.addEventListener('keypress', e => {
 });
  
 function getInputValue(query) {
-  const api = `http://api.openweathermap.org/data/2.5/weather?q=${query}&APPID={key}=metric`;
+  const api = `http://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&units=metric`;
 
   fetchData(api);
+  storeInputInLocalStorage(api);
 }
 
 // fetch data function to enter the returned wether data in the DOM
@@ -64,7 +65,7 @@ function fetchData(url) {
 
 // add date in the DOM acording to the format month,date,year
 function dateManage(arg) {
-  let months = [ "January", "February", "March", "April","May", "June", "July", "August", "September","Octomber", "November", "December" ];
+  let months = [ "January", "February", "March", "April","May", "June", "July", "August", "September", "Octomber", "November", "December" ];
   let year = arg.getFullYear();
   let month = months[arg.getMonth()];
   let date = arg.getDate();
@@ -81,29 +82,29 @@ function timeManage(arg) {
 }
 
 // store user search input in the local storage
-function storeInputInLocalStorage(city) {
-  let cities;
-  if(localStorage.getItem('cities') === null) {
-    cities = [];
+function storeInputInLocalStorage(data) {
+  let weatherData;
+  if(localStorage.getItem('weatherData') === null) {
+    weatherData = [];
   } else {
-    cities = JSON.parse(localStorage.getItem('cities'));
+    weatherData = JSON.parse(localStorage.getItem('weatherData'));
   }
 
-  cities.push(city);
+  weatherData.push(data);
 
-  localStorage.setItem('cities', JSON.stringify(cities));
+  localStorage.setItem('weatherData', JSON.stringify(weatherData));
 }
 
 // get loca storage items
-function   getCities() {
-  let cities;
-  if(localStorage.getItem('cities') === null) {
-    cities = [];
+function getWeatherData() {
+  let weatherData;
+  if(localStorage.getItem('weatherData') === null) {
+    weatherData = [];
   } else {
-    cities = JSON.parse(localStorage.getItem('cities'));
+    weatherData = JSON.parse(localStorage.getItem('weatherData'));
   }
 
-  cities.forEach(function(city) {
-    getInputValue(city);
+  weatherData.forEach(function(data) {
+    getInputValue(data);
   });
 }
