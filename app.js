@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
   let y;
 
   // DOM load event
-  document.addEventListener('DOMContentLoad', getCities())
+  document.addEventListener('DOMContentLoad', getWeatherData());
 
   // get the users location
   if(navigator.geolocation) {
@@ -105,6 +105,6 @@ function getWeatherData() {
   }
 
   weatherData.forEach(function(data) {
-    getInputValue(data);
+    fetchData(data);
   });
 }
