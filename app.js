@@ -6,9 +6,6 @@ window.addEventListener("load", () => {
   let x;
   let y;
 
-  // DOM load event
-  document.addEventListener('DOMContentLoad', getWeatherData());
-
   // get the users location
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
@@ -17,7 +14,6 @@ window.addEventListener("load", () => {
 
       const api = `http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&units${x},${y}&units=metric`;
 
-      // fetch users current wether data according to their location
       fetchData(api);
     })
   }
@@ -27,7 +23,6 @@ window.addEventListener("load", () => {
 input.addEventListener('keypress', e => {
   if(e.keyCode == 13) {
     getInputValue(input.value);
-    storeInputInLocalStorage(input.value);
   }
 });
  
@@ -83,6 +78,6 @@ function timeManage(arg) {
 // registering service worker
 if('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
-    .then((reg) => console.log('service worker regoigistered', reg))
-    .catch((err) => console.log('not registerdreg', err))
+    .then((reg) => console.log('service worker registered', reg))
+    .catch((err) => console.log('not registered', err));
 }
