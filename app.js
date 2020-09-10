@@ -35,7 +35,6 @@ function getInputValue(query) {
   const api = `http://api.openweathermap.org/data/2.5/weather?q=${query}&APPID=341f3a5ad73fcf20c2dee19a9f0b6b90&units=metric`;
 
   fetchData(api);
-  storeInputInLocalStorage(api);
 }
 
 // fetch data function to enter the returned wether data in the DOM
@@ -81,30 +80,9 @@ function timeManage(arg) {
   return `${hr}:${min}`;
 }
 
-// store user search input in the local storage
-function storeInputInLocalStorage(data) {
-  let weatherData;
-  if(localStorage.getItem('weatherData') === null) {
-    weatherData = [];
-  } else {
-    weatherData = JSON.parse(localStorage.getItem('weatherData'));
-  }
-
-  weatherData.push(data);
-
-  localStorage.setItem('weatherData', JSON.stringify(weatherData));
-}
-
-// get loca storage items
-function getWeatherData() {
-  let weatherData;
-  if(localStorage.getItem('weatherData') === null) {
-    weatherData = [];
-  } else {
-    weatherData = JSON.parse(localStorage.getItem('weatherData'));
-  }
-
-  weatherData.forEach(function(data) {
-    fetchData(data);
-  });
+// registering service worker
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then((reg) => console.log('service worker regoigistered', reg))
+    .catch((err) => console.log('not registerdreg', err))
 }
