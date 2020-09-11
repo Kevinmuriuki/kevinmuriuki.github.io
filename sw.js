@@ -48,5 +48,3 @@ self.addEventListener('fetch', evt => {
       })
   )
 });
-
-document.addEventListener('DOMContentChange')
