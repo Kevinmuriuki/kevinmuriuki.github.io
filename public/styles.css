@@ -5,8 +5,8 @@
 }
 
 body {
+  height: 100vh;
   background: linear-gradient(rgb(48, 62, 143), rgb(47, 150, 163), rgb(48, 62, 143));
-  background-repeat: repeat;
   font-family: 'montserrat', sans-serif;
   color: white;
 }
@@ -21,12 +21,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   margin-bottom: 2.1890em;
   padding: 50px 15px 15px;
 }
 
+h1 {
+  padding-bottom: 1em;
+}
+
+
 .header input {
-  max-width: 300px;
+  max-width: 500px;
   width: 100%;
   padding: 10px 15px;
   border: none;
@@ -44,14 +50,20 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.weather-data {
+.dynamic-content{
   position: relative;
-  padding: 1.6rem 1.6rem 4rem;
   width: 90%;
   height: 320px;
-  background: rgb(101, 123, 247);
+  padding: 1.6rem 1.6rem 4rem;
   flex-direction: column;
   text-align: center;
+}
+
+.weather-data {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  background: rgb(101, 123, 247);
 }
 
 .location {
@@ -88,6 +100,7 @@ body {
 }
 
 .temperature-data > p {
+  padding-top: 2em;
   font-size: 1.5em;
   font-weight: lighter;
 }
@@ -96,7 +109,7 @@ body {
   height: 10rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-direction: row-reverse;
 
 }
@@ -111,6 +124,13 @@ body {
   all: revert;
   font-size: 1.5em;
   font-weight: 900;
+}
+
+.temperature span img {
+  margin: 0;
+  padding: 0;
+  width: 5em;
+  color: green;
 }
 
 
