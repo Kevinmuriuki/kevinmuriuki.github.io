@@ -1,8 +1,8 @@
 // get input element in the header by class name
 const input = document.querySelector(".cities");
 const msg = document.querySelector(".erro-msg");
-var inputVal;
-
+var searchinput;
+document.addEventListener('DOMContentLoaded', getweatherData());
 // initiate a window event trigerd after the browser loads
 window.addEventListener("load", () => {
   let x;
@@ -24,8 +24,8 @@ window.addEventListener("load", () => {
 // add an event that in order to get users input to display weather data according to their search input
 input.addEventListener('keypress', e => {
   if(e.keyCode == 13) {
-    inputVal = input.value;
-    getInputValue(inputVal);
+    searchinput = input.value;
+    getInputValue(searchinput);
   }
 });
  
@@ -41,10 +41,10 @@ function fetchData(url) {
 
   fetch(url) 
     .then(response => {
-      return response.json();
+    return response.json();
     })
     .then(data => {
-      const { main, name, weather } = data; //declaring data object
+      const { main, name, weather } = data; 
       const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@4x.png`;
       const div = document.querySelector(".dynamic-content");
       const divContent = `<div class="weather-data">
@@ -64,21 +64,43 @@ function fetchData(url) {
 
       div.innerHTML = divContent;
 
+      let searchHistory = JSON.parse(localStorage.getItem("searchinput")) || [];
+      searchHistory.push({ main, name, weather });
+  
+    
+      localStorage.setItem(searchinput, JSON.stringify(searchHistory)); 
+
     })
     .catch(() => {
       msg.textContent = "Please enter a valid city or check whether you are online";
     });
-
-    let searchHistory = JSON.parse(localStorage.getItem("searchinput")) || [];
-    searchHistory.push(inputVal);
-  
-    
-    localStorage.setItem('searchinput', JSON.stringify(searchHistory));
-    
-    var lastSearch = JSON.parse(localStorage.getItem("searchinput"));
-    console.log(lastSearch);
-    
 }
+
+function getweatherData() {
+  let searchHistory = JSON.parse(localStorage.getItem("searchinput")) || [];
+
+  searchHistory.forEach(({ main, name, weather }) => {
+    const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@4x.png`;
+      const div = document.querySelector(".dynamic-content");
+      const divContent = `<div class="weather-data">
+        <div class="location">
+          <h2>${name}</h2>
+          <p>${timeManage(todayDateTime)}</p>
+        </div>
+        <div class="temperature-data">
+          <p class="date">${dateManage(todayDateTime)}</p>
+          <div class="temperature">
+            <p><span class="temp">${Math.floor(main.temp)}</span>&#8451;</p>
+            <span><img src="${icon}"></span>
+          </div>
+          <p class="temperature-description">${weather[0].description}</p>
+        </div>
+      </div>`;
+
+      div.innerHTML = divContent;
+  });
+}
+
 
 // add date in the DOM acording to the format month,date,year
 function dateManage(arg) {
