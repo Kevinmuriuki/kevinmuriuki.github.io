@@ -1,5 +1,6 @@
 // get input element in the header by class name
 const input = document.querySelector(".cities");
+const form = document.querySelector(".form-inline");
 const msg = document.querySelector(".erro-msg");
 let todayDateTime = new Date();
 let searchinput;
@@ -25,11 +26,14 @@ window.addEventListener("load", () => {
 document.addEventListener('DOMContentLoaded', getWeatherData);
 
 // add an event that in order to get users input to display weather data according to their search input
-input.addEventListener('keypress', e => {
-  if(e.keyCode == 13) {
+form.addEventListener('submit', e => {
+  if(input.value === '') {
+    alert("input a name of a city");
+  }
     searchinput = input.value;
     getInputValue(searchinput);
-  }
+
+    e.preventDefault();
 });
  
 function getInputValue(query) {
@@ -47,21 +51,26 @@ function fetchData(url) {
     .then(data => {
       const { main, name, weather } = data; 
       const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@4x.png`;
-      const div = document.querySelector(".dynamic-content");
-      const divContent = `<div class="weather-data">
-        <div class="location">
-          <h2>${name}</h2>
-          <p>${timeManage(todayDateTime)}</p>
-        </div>
-        <div class="temperature-data">
-          <p class="date">${dateManage(todayDateTime)}</p>
-          <div class="temperature">
-            <p><span class="temp">${Math.floor(main.temp)}</span>&#8451;</p>
-            <span><img src="${icon}"></span>
-          </div>
-          <p class="temperature-description">${weather[0].description}</p>
-        </div>
-      </div>`;
+      const div = document.querySelector(".panel-body");
+      const divContent = `
+            <div class="row">    
+              <br>
+              <div class="col-md-2 col-sm-3 text-center">
+                <a class="story-title" href="#"><img alt="" src="${icon}" style="width:100px;height:100px" class="img-circle"></a>
+              </div>
+              <div class="col-md-10 col-sm-9">
+                <h3>${name}</h3>
+                <div class="row">
+                  <div class="col-xs-9">
+                    <h4><span class="label label-default">${dateManage(todayDateTime)}</span><span class="label label-default">${timeManage(todayDateTime)}</span></h4>
+                    <h4><span class="label label-default">${weather[0].description}</span> <span class="label label-default">${Math.floor(main.temp)}&#176;C</span></h4>
+                  </div>
+                  <div class="col-xs-3"></div>
+                </div>
+                <br><br>
+              </div>
+            </div>
+            <hr>`;
 
       div.innerHTML = divContent;
 
@@ -72,8 +81,8 @@ function fetchData(url) {
       localStorage.setItem(searchinput, JSON.stringify(searchHistory)); 
 
     })
-    .catch(() => {
-      msg.textContent = "Please enter a valid city or check whether you are online";
+    .catch((err) => {
+      console.log(err);
     });
 }
 
@@ -82,21 +91,26 @@ function getWeatherData() {
 
   searchHistory.forEach((searchinput) => {
     const icon = `https://openweathermap.org/img/wn/${searchinput.weather[0]["icon"]}@4x.png`;
-      const div = document.querySelector(".dynamic-content");
-      const divContent = `<div class="weather-data">
-        <div class="location">
-          <h2>${searchinput.name}</h2>
-          <p>${timeManage(todayDateTime)}</p>
-        </div>
-        <div class="temperature-data">
-          <p class="date">${dateManage(todayDateTime)}</p>
-          <div class="temperature">
-            <p><span class="temp">${Math.floor(searchinput.main.temp)}</span>&#8451;</p>
-            <span><img src="${icon}"></span>
+      const div = document.querySelector(".panel-body");
+      const divContent = `
+          <div class="row">    
+          <br>
+            <div class="col-md-2 col-sm-3 text-center">
+              <a class="story-title" href="#"><img alt="" src="${searchinput.icon}" style="width:100px;height:100px" class="img-circle"></a>
+            </div>
+            <div class="col-md-10 col-sm-9">
+              <h3>${searchinput.name}</h3>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">${dateManage(todayDateTime)}</span> <span class="label label-default">${timeManage(todayDateTime)}</span></h4>
+                  <h4><span class="label label-default">${searchinput.weather[0].description}</span> <span class="label label-default">${Math.floor(searchinput.main.temp)}&#176;C</span></h4>
+                </div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
           </div>
-          <p class="temperature-description">${searchinput.weather[0].description}</p>
-        </div>
-      </div>`;
+          <hr>`;
 
       div.innerHTML = divContent;
   });
