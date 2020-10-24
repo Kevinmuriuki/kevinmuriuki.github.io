@@ -1,7 +1,7 @@
 // get input element in the header by class name
 const input = document.querySelector(".cities");
 const form = document.querySelector(".form-inline");
-const msg = document.querySelector(".erro-msg");
+const ul = document.querySelector(".panel");
 let todayDateTime = new Date();
 let searchinput;
 
@@ -25,6 +25,37 @@ window.addEventListener("load", () => {
 
 document.addEventListener('DOMContentLoaded', getWeatherData);
 
+function getWeatherData() {
+  let searchHistory = JSON.parse(localStorage.getItem('key')) || [];
+
+  searchHistory.forEach((key) => {
+    const icon = `https://openweathermap.org/img/wn/${key.weather[0]["icon"]}@4x.png`;
+      
+    const li = document.createElement("li");
+      li.className = "panel-body";
+      li.innerHTML = `
+      <div class="row">    
+        <br>
+        <div class="col-md-2 col-sm-3 text-center">
+          <a class="story-title" href="#"><img alt="" src="${icon}" style="width:100px;height:100px" class="img-circle"></a>
+        </div>
+        <div class="col-md-10 col-sm-9">
+          <h3>${key.name}</h3>
+          <div class="row">
+            <div class="col-xs-9">
+              <h4><span class="label label-default">${dateManage(todayDateTime)}</span><span class="label label-default">${timeManage(todayDateTime)}</span></h4>
+              <h4><span class="label label-default">${key.weather[0].description}</span> <span class="label label-default">${Math.floor(key.main.temp)}&#176;C</span></h4>
+            </div>
+            <div class="col-xs-3"></div>
+          </div>
+          <br><br>
+        </div>
+      </div>
+      <hr>`;
+    ul.appendChild(li);
+  });
+}
+
 // add an event that in order to get users input to display weather data according to their search input
 form.addEventListener('submit', e => {
   if(input.value === '') {
@@ -33,7 +64,8 @@ form.addEventListener('submit', e => {
     searchinput = input.value;
     getInputValue(searchinput);
 
-    e.preventDefault();
+  input.value = '';
+  e.preventDefault();
 });
  
 function getInputValue(query) {
@@ -51,34 +83,30 @@ function fetchData(url) {
     .then(data => {
       const { main, name, weather } = data; 
       const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@4x.png`;
-      const div = document.querySelector(".panel-body");
-      const divContent = `
-            <div class="row">    
-              <br>
-              <div class="col-md-2 col-sm-3 text-center">
-                <a class="story-title" href="#"><img alt="" src="${icon}" style="width:100px;height:100px" class="img-circle"></a>
-              </div>
-              <div class="col-md-10 col-sm-9">
-                <h3>${name}</h3>
-                <div class="row">
-                  <div class="col-xs-9">
-                    <h4><span class="label label-default">${dateManage(todayDateTime)}</span><span class="label label-default">${timeManage(todayDateTime)}</span></h4>
-                    <h4><span class="label label-default">${weather[0].description}</span> <span class="label label-default">${Math.floor(main.temp)}&#176;C</span></h4>
-                  </div>
-                  <div class="col-xs-3"></div>
-                </div>
-                <br><br>
-              </div>
+      const li = document.createElement("li");
+      li.className = "panel-body";
+      li.innerHTML = `
+      <div class="row">    
+        <br>
+        <div class="col-md-2 col-sm-3 text-center">
+          <a class="story-title" href="#"><img alt="" src="${icon}" style="width:100px;height:100px" class="img-circle"></a>
+        </div>
+        <div class="col-md-10 col-sm-9">
+          <h3>${name}</h3>
+          <div class="row">
+            <div class="col-xs-9">
+              <h4><span class="label label-default">${dateManage(todayDateTime)}</span><span class="label label-default">${timeManage(todayDateTime)}</span></h4>
+              <h4><span class="label label-default">${weather[0].description}</span> <span class="label label-default">${Math.floor(main.temp)}&#176;C</span></h4>
             </div>
-            <hr>`;
+            <div class="col-xs-3"></div>
+          </div>
+          <br><br>
+        </div>
+      </div>
+      <hr>`;
+      ul.appendChild(li);
 
-      div.innerHTML = divContent;
-
-      let searchHistory = JSON.parse(localStorage.getItem(searchinput)) || [];
-      searchHistory.push({ main, name, weather });
-  
-    
-      localStorage.setItem(searchinput, JSON.stringify(searchHistory)); 
+      storeHistoryLocalStorage({ main, name, weather });
 
     })
     .catch((err) => {
@@ -86,36 +114,13 @@ function fetchData(url) {
     });
 }
 
-function getWeatherData() {
-  let searchHistory = JSON.parse(localStorage.getItem(searchinput)) || [];
-
-  searchHistory.forEach((searchinput) => {
-    const icon = `https://openweathermap.org/img/wn/${searchinput.weather[0]["icon"]}@4x.png`;
-      const div = document.querySelector(".panel-body");
-      const divContent = `
-          <div class="row">    
-          <br>
-            <div class="col-md-2 col-sm-3 text-center">
-              <a class="story-title" href="#"><img alt="" src="${searchinput.icon}" style="width:100px;height:100px" class="img-circle"></a>
-            </div>
-            <div class="col-md-10 col-sm-9">
-              <h3>${searchinput.name}</h3>
-              <div class="row">
-                <div class="col-xs-9">
-                  <h4><span class="label label-default">${dateManage(todayDateTime)}</span> <span class="label label-default">${timeManage(todayDateTime)}</span></h4>
-                  <h4><span class="label label-default">${searchinput.weather[0].description}</span> <span class="label label-default">${Math.floor(searchinput.main.temp)}&#176;C</span></h4>
-                </div>
-                <div class="col-xs-3"></div>
-              </div>
-              <br><br>
-            </div>
-          </div>
-          <hr>`;
-
-      div.innerHTML = divContent;
-  });
+function storeHistoryLocalStorage({ main, name, weather }) {
+  let searchHistory = JSON.parse(localStorage.getItem('key')) || [];
+      searchHistory.push({ main, name, weather });
+  
+    
+      localStorage.setItem('key', JSON.stringify(searchHistory)); 
 }
-
 
 // add date in the DOM acording to the format month,date,year
 function dateManage(arg) {
