@@ -15,6 +15,10 @@ h1,h2,h3,.highlight,.navbar a,#masthead h4 {
   font-family:'Oswald',arial narrow,sans-serif;
 }
 
+li {
+  list-style: none;
+}
+
 footer {
 
   margin-top:40px;
