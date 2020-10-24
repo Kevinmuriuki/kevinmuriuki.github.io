@@ -1,8 +1,9 @@
 // get input element in the header by class name
 const input = document.querySelector(".cities");
 const msg = document.querySelector(".erro-msg");
-var searchinput;
-document.addEventListener('DOMContentLoaded', getweatherData());
+let todayDateTime = new Date();
+let searchinput;
+
 // initiate a window event trigerd after the browser loads
 window.addEventListener("load", () => {
   let x;
@@ -21,6 +22,8 @@ window.addEventListener("load", () => {
   }
 });
 
+document.addEventListener('DOMContentLoaded', getWeatherData);
+
 // add an event that in order to get users input to display weather data according to their search input
 input.addEventListener('keypress', e => {
   if(e.keyCode == 13) {
@@ -37,8 +40,6 @@ function getInputValue(query) {
 
 // fetch data function to enter the returned wether data in the DOM
 function fetchData(url) {
-  let todayDateTime = new Date();
-
   fetch(url) 
     .then(response => {
     return response.json();
@@ -64,7 +65,7 @@ function fetchData(url) {
 
       div.innerHTML = divContent;
 
-      let searchHistory = JSON.parse(localStorage.getItem("searchinput")) || [];
+      let searchHistory = JSON.parse(localStorage.getItem(searchinput)) || [];
       searchHistory.push({ main, name, weather });
   
     
@@ -76,24 +77,24 @@ function fetchData(url) {
     });
 }
 
-function getweatherData() {
-  let searchHistory = JSON.parse(localStorage.getItem("searchinput")) || [];
+function getWeatherData() {
+  let searchHistory = JSON.parse(localStorage.getItem(searchinput)) || [];
 
-  searchHistory.forEach(({ main, name, weather }) => {
-    const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@4x.png`;
+  searchHistory.forEach((searchinput) => {
+    const icon = `https://openweathermap.org/img/wn/${searchinput.weather[0]["icon"]}@4x.png`;
       const div = document.querySelector(".dynamic-content");
       const divContent = `<div class="weather-data">
         <div class="location">
-          <h2>${name}</h2>
+          <h2>${searchinput.name}</h2>
           <p>${timeManage(todayDateTime)}</p>
         </div>
         <div class="temperature-data">
           <p class="date">${dateManage(todayDateTime)}</p>
           <div class="temperature">
-            <p><span class="temp">${Math.floor(main.temp)}</span>&#8451;</p>
+            <p><span class="temp">${Math.floor(searchinput.main.temp)}</span>&#8451;</p>
             <span><img src="${icon}"></span>
           </div>
-          <p class="temperature-description">${weather[0].description}</p>
+          <p class="temperature-description">${searchinput.weather[0].description}</p>
         </div>
       </div>`;
 
@@ -122,7 +123,7 @@ function timeManage(arg) {
 
 // registering service worker
 if('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then((reg) => {console.log('registerd'), reg})
-    .catch((err) => {console.log('not registerd'), err})
+  navigator.serviceWorker.register('sw.js')
+    .then((reg) => console.log('service worker registerd', reg))
+    .catch((err) => console.log('service worker not registerd', err))
 }
